@@ -1,0 +1,5 @@
+# 忽略所有 png 文件
+*.png
+
+# 忽略 node_modules 目录
+node_modules/

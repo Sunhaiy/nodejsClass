@@ -12,13 +12,17 @@ const start = async () => {
     await page.waitForSelector('#lPassword');
     await page.type('#lUsername', '###');
     await page.type('#lPassword', '###');
+    
 
-    await setTimeout(() => {
-        
-    }, 3000);
+   
     console.log('hello');
     await page.waitForSelector('.wall-sub-btn', { visible: true });
-    await page.click('span.wall-sub-btn');
+    const ele =await page.$('.wall-sub-btn')
+    const x = ele.x + ele.width / 2;
+    const y = ele.y + ele.height / 2;
+    await page.mouse.click(x, y);
+
+    
 };
 
 start();

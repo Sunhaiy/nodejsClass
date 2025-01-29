@@ -27,21 +27,44 @@ const start = async () => {
 
         console.log(`Element found at x: ${x}, y: ${y}`);
 
-        // 模拟自然的鼠标移动和悬停
+        
         await page.mouse.move(x, y, { steps: 10 });
         await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 500) + 500)); // 随机等待500-1000毫秒
 
-        // 模拟点击
+        
         await page.mouse.down();
         await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 100) + 50)); // 随机等待50-150毫秒
         await page.mouse.up();
 
         console.log('Clicked the button');
 
-        // 等待验证码或其他操作
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 等待2秒
+        //过验证码
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        await page.waitForSelector('.yidun_slider__icon', { visible: true });
+        const infor =await page.$('.yidun_slider__icon')
+        const boundingBoxinfor = await infor.boundingBox();
+        if (boundingBoxinfor) {
+            const xinfor = boundingBoxinfor.x + boundingBoxinfor.width / 2;
+            const yinfor = boundingBoxinfor.y + boundingBoxinfor.height / 2;
+            console.log(`Element found at x: ${xinfor}, y: ${yinfor}`);
 
-        // 截图检查页面状态
+            //获取滑块图像
+            await page.waitForSelector('.yidun_bg-img')
+            const inforimage =await page.$('.yidun_bg-img')
+            const imgsrc =await inforimage.getProperty('src')
+            const srchuakuai =await imgsrc.jsonValue()
+            console.log(src)
+            //获取原始图像
+            
+            const inforimagey =await page.$('.yidun_bg-img')
+            const imgsrcy =await inforimagey.getProperty('src')
+            const srcy =await imgsrcy.jsonValue()
+            console.log(srcy)
+            
+            await page.mouse.move(xinfor, yinfor, { steps: 10 });
+            await new Promise(resolve =>setTimeout(resolve, Math.floor(Math.random() * 500)))
+            await page.mouse.down();
+        }
         await page.screenshot({ path: 'after_click.png' });
     } else {
         console.log('Element not found or not visible');
